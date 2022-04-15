@@ -25,7 +25,7 @@ for (var i = 0; i < n; i++) {
 }
 
 function update() {
-    let phaseLength = 4 * 1000 // milliseconds
+    let phaseLength = (40 / 6) * 1000 // milliseconds
     let fadeDuration = 1 * 1000
 
     let t = performance.now() - tStart - fadeDuration / 2
@@ -37,12 +37,13 @@ function update() {
     } else {
         let funcs = [
             loading,
-            stairScroll,
+            paint,
             stairHor,
+            stairVer,
+            stairScroll,
             spectrogram,
             onesine,
             twosines,
-            stairVer,
             twister,
             drop,
             rotating,
@@ -51,10 +52,9 @@ function update() {
             multiball,
             tunnel,
             heart,
-            rand,
             empty,
         ]
-        //funcs = [spectrogram]
+        //funcs = [sierpinski]
 
         t = t + funcs.length * phaseLength
 
@@ -101,6 +101,18 @@ function spectrogram(t, i) {
     return dataArray[i] / 300
 }
 
+function sierpinski(t, i) {
+    let x = i
+    let y = Math.floor(sin(i**2) * 64)
+    console.log(y)
+    let j = 64 * x + y
+    if ((15 & j & x & y) == 0) {
+        return 0
+    } else {
+        return y / 64
+    }
+}
+
 function stairScroll(t, i) {
     return ceil((i / 64) * 8 - ((t * 2) % 8)) / 8 + ((t * 2) % 8) / 8
 }
@@ -141,7 +153,8 @@ function apply(func) {
     for (var i = 0; i < sliders.length; i++) {
         let val = func(t, i)
         if (val !== undefined) {
-            sliders[i].value = 0.8*val + spectrogram(t, i) * 0.2
+            //sliders[i].value = 0.8 * val + spectrogram(t, i) * 0.2
+            sliders[i].value = val
         }
     }
 }
@@ -150,6 +163,15 @@ function interpolate(func1, func2, amount) {
     apply(function (t, i) {
         return func1(t, i) * (1 - amount) + func2(t, i) * amount
     })
+}
+
+function paint(t, i) {
+    return (
+        sin(i ** 2 + i ** 4 + 0.1 * t) * 1 * abs(sin(i / 10 + t / 10)) +
+        1.5 +
+        0.5 -
+        3 * (sin(t / 2) * 0.5 + 0.5)
+    )
 }
 
 function rotating(t, i) {
