@@ -36,10 +36,10 @@ function update() {
     } else {
         let funcs = [
             loading,
-            stairHor,
-            stairVer,
             onesine,
             twosines,
+            stairHor,
+            stairVer,
             twister,
             drop,
             rotating,
@@ -60,7 +60,6 @@ function update() {
         if (phasePosition > phaseLength - fadeDuration) {
             let p2 = phasePosition - (phaseLength - fadeDuration)
             let amount = 1 / (1 + Math.exp((0.5 - p2 / fadeDuration) * 10))
-            console.log(amount)
             let func = funcs[phase]
             let func2 = funcs[(phase + 1) % funcs.length]
             interpolate(func, func2, amount)
@@ -160,7 +159,7 @@ function tunnel(t, i) {
 }
 
 function loading(t, i) {
-    return -(i - (((64 / 105) * t) % 15) ** 5)
+    return Math.min(1,-(i - (((64 / 105) * t) % 15) ** 5))
 }
 
 function fire(t, i) {
@@ -316,3 +315,7 @@ function twister(t, i) {
 }
 
 update()
+
+function restart() {
+    tStart = performance.now()
+}
