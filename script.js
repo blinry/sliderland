@@ -141,17 +141,15 @@ function apply(func) {
     for (var i = 0; i < sliders.length; i++) {
         let val = func(t, i)
         if (val !== undefined) {
-            sliders[i].value = val
+            sliders[i].value = 0.8*val + spectrogram(t, i) * 0.2
         }
     }
 }
 
 function interpolate(func1, func2, amount) {
-    let t = (performance.now() - tStart) / 1000
-
-    for (var i = 0; i < sliders.length; i++) {
-        sliders[i].value = (1 - amount) * func1(t, i) + amount * func2(t, i)
-    }
+    apply(function (t, i) {
+        return func1(t, i) * (1 - amount) + func2(t, i) * amount
+    })
 }
 
 function rotating(t, i) {
