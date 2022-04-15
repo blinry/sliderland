@@ -28,10 +28,9 @@ for (var i = 0; i < n; i++) {
 }
 
 let phaseLength = (40 / 6) * 1000 // milliseconds
+let fadeDuration = 1 * 1000
 
 function update() {
-    let fadeDuration = 1 * 1000
-
     let t = performance.now() - tStart - fadeDuration / 2
 
     let formula = document.getElementById("formula").value
@@ -206,9 +205,12 @@ function paint(t, i) {
 }
 
 function rotating(t, i) {
-    let a = sin(t) * PI * 2
-    let x = i / 64 - 0.5
-    let y = (x / cos(a)) * sin(a) + 0.5
+    let dx = sin(t)*20
+    let dy = cos(t)*20
+
+    let a = sin((t / (phaseLength / 1000)) * Math.PI * 4 + 0.5) * PI
+    let x = (i-dx) / 64 - 0.5
+    let y = (x / cos(a)) * sin(a) + 0.5 + dy/64
     return y
 }
 
@@ -266,13 +268,13 @@ function sierpinski(t, i) {
 }
 
 function tunnel(t, i) {
-    let x = 0.5
-    let y = 0.5
-
     let n = 3
     let c = floor(i) % n
     let maxR = 0.5 * sqrt(2)
     let r = ((maxR / n) * c + t / 2) % maxR
+
+    let x = 0.5 + sin(t * 2 + c / 2) * 0.1
+    let y = 0.5 - c * 0.1
 
     let j = i / 64
     if (Math.abs(x - j) <= r) {
@@ -414,25 +416,26 @@ function rand(t, i) {
     return Math.random()
 }
 
-function twosines2(t) {
-    for (var i = 0; i < sliders.length; i++) {
-        if (t % 100 < 50) {
-            sliders[i].value = Math.sin(i / 10 + t / 1000) * 0.5 + 0.5
-        } else {
-            sliders[i].value = Math.sin(i / 30 + t / 800) * 0.5 + 0.5
-        }
-    }
-}
-
 function onesine(t, i) {
-    return Math.sin(i / 10 + t) * 0.2 + 0.5
+    if (i == 0) {
+        analyser.getByteFrequencyData(dataArray)
+    }
+    return (
+        Math.sin(i / 10 + ((4 * t) / (phaseLength / 1000)) * PI * 2) * 0.2 +
+        0.3 +
+        (dataArray[i] / 300) * 0.2
+    )
 }
 
 function twosines(t, i) {
     if (i % 2 == 0) {
         return onesine(t, i)
     } else {
-        return Math.sin(i / 30 + t * 0.8) * 0.5 + 0.5
+        return (
+            Math.sin(i / 30 + t * 0.8 * 2) * 0.4 +
+            0.5 +
+            (dataArray[i] / 300) * 0.2
+        )
     }
 }
 
