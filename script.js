@@ -6,6 +6,8 @@ let floor = Math.floor
 let ceil = Math.ceil
 let sqrt = Math.sqrt
 let random = Math.random
+let max = Math.max
+let min = Math.min
 let PI = Math.PI
 
 let sliders = []
@@ -58,7 +60,7 @@ function update() {
             random,
             empty,
         ]
-        //funcs = [sierpinski]
+        //funcs = [drop]
 
         t = t + funcs.length * phaseLength
 
@@ -87,7 +89,10 @@ const audioCtx = new (window.AudioContext || window.webkitAudioContext)()
 const audio = document.querySelector("audio")
 audio.onplay = () => {
     audioCtx.resume()
-    restart()
+    tStart = performance.now() - audio.currentTime * 1000
+}
+audio.onseeking = () => {
+    tStart = performance.now() - audio.currentTime * 1000
 }
 const source = audioCtx.createMediaElementSource(audio)
 // Create an analyser
@@ -105,7 +110,7 @@ function spectrogram(t, i) {
     return dataArray[i] / 300
 }
 
-function sierpinski(t, i) {
+function sierpinski2(t, i) {
     let x = i
     let y = Math.floor(sin(i ** 2) * 64)
     console.log(y)
@@ -143,9 +148,21 @@ function stairVer(t, i) {
 }
 
 function drop(t, i) {
+    let wave =
+        Math.sin(
+            PI +
+                -Math.abs(i / 64 - 0.5) * 10 +
+                ((2 * PI) / (phaseLength / 1000)) * 8 * t,
+        ) *
+            0.03 +
+        0.5
     return i == 32
-        ? Math.sin(t * 10 + PI / 2) * 0.55 + 1
-        : Math.sin(-Math.abs(i / 64 - 0.5) * 10 + t * 10) * 0.03 + 0.5
+        ? max(
+              Math.sin(PI + ((PI * 2) / (phaseLength / 1000)) * 8 * t) * 0.25 +
+                  0.5,
+              wave,
+          )
+        : wave //Math.sin(((PI * 2) / (phaseLength / 1000)) * 8 * t) * 0.55 + 1
 }
 
 function empty(t, i) {
@@ -169,12 +186,22 @@ function interpolate(func1, func2, amount) {
     })
 }
 
+// INCLUDE?
+function idle(t, i) {
+    return (
+        sin(i ** 2 + i ** 4 + 0.1 * t) * 1 * abs(sin(i / 10 + t / 10)) +
+        1.5 +
+        0.5 -
+        3 * (sin(t / (phaseLength / 3)) * 0.5 + 0.5)
+    )
+}
+
 function paint(t, i) {
     return (
         sin(i ** 2 + i ** 4 + 0.1 * t) * 1 * abs(sin(i / 10 + t / 10)) +
         1.5 +
         0.5 -
-        3 * (sin(t / 2) * 0.5 + 0.5)
+        3.3 * (sin(t / 2 + (PI * 1) / 2) * 0.5 + 0.5)
     )
 }
 
@@ -204,9 +231,9 @@ function triHelperDown(t, i, x, y, w) {
     return y - base
 }
 
-function sierpinksi(t, i) {
+function sierpinski(t, i) {
     let realW = t * 50
-    let w =realW % 150
+    let w = realW % 150
     let h = (cos(PI / 6) * w) / 64
     let base = ((w / 2) * sin(PI / 6)) / cos(PI / 6) / 64
 
@@ -223,7 +250,7 @@ function sierpinksi(t, i) {
         }
     }
 
-    w = (realW - 75)%150
+    w = (realW - 75) % 150
 
     if (abs(i - x * 64) < w / 2) {
         if (i % 4 > 1) {
@@ -251,7 +278,7 @@ function tunnel(t, i) {
     if (Math.abs(x - j) <= r) {
         let a = Math.acos(Math.abs(x - j) / r)
         let offset = Math.sin(a) * r
-        if (t % 0.1 > 0.05) {
+        if (t % (1 / (15 / 2)) > 1 / 15) {
             return y + offset
         } else {
             return y - offset
@@ -418,7 +445,3 @@ function twister(t, i) {
 }
 
 update()
-
-function restart() {
-    tStart = performance.now()
-}
