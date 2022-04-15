@@ -1,5 +1,6 @@
 let sin = Math.sin
 let cos = Math.cos
+let tan = Math.tan
 let abs = Math.abs
 let floor = Math.floor
 let ceil = Math.ceil
@@ -24,8 +25,9 @@ for (var i = 0; i < n; i++) {
     document.body.appendChild(slider)
 }
 
+let phaseLength = (40 / 6) * 1000 // milliseconds
+
 function update() {
-    let phaseLength = (40 / 6) * 1000 // milliseconds
     let fadeDuration = 1 * 1000
 
     let t = performance.now() - tStart - fadeDuration / 2
@@ -50,8 +52,10 @@ function update() {
             fire,
             ball,
             multiball,
+            sierpinski,
             tunnel,
             heart,
+            random,
             empty,
         ]
         //funcs = [sierpinski]
@@ -103,7 +107,7 @@ function spectrogram(t, i) {
 
 function sierpinski(t, i) {
     let x = i
-    let y = Math.floor(sin(i**2) * 64)
+    let y = Math.floor(sin(i ** 2) * 64)
     console.log(y)
     let j = 64 * x + y
     if ((15 & j & x & y) == 0) {
@@ -182,7 +186,56 @@ function rotating(t, i) {
 }
 
 function banner(t, i) {
-    //IJLMNUVW
+    //AIJLMNUVWabdhiuvw
+    //BCDEFILPR
+}
+
+function triHelperUp(t, i, x, y, w) {
+    let base = ((w / 2) * sin(PI / 6)) / cos(PI / 6) / 64
+    return (
+        1 -
+        abs(((1 / tan(PI / 6)) * (i - x * 64)) / 64) -
+        (1 - y + base - (cos(PI / 6) * w) / 64)
+    )
+}
+
+function triHelperDown(t, i, x, y, w) {
+    let base = ((w / 2) * sin(PI / 6)) / cos(PI / 6) / 64
+    return y - base
+}
+
+function sierpinksi(t, i) {
+    let realW = t * 50
+    let w =realW % 150
+    let h = (cos(PI / 6) * w) / 64
+    let base = ((w / 2) * sin(PI / 6)) / cos(PI / 6) / 64
+
+    let x = 0.5
+    let y = 0.5
+
+    let val = 0
+
+    if (abs(i - x * 64) < w / 2) {
+        if (i % 2 == 0) {
+            val = triHelperUp(t, i, x, y, w)
+        } else {
+            val = triHelperDown(t, i, x, y, w)
+        }
+    }
+
+    w = (realW - 75)%150
+
+    if (abs(i - x * 64) < w / 2) {
+        if (i % 4 > 1) {
+            if (i % 2 == 1) {
+                val = y + (y - triHelperUp(t, i, x, y, w))
+            } else {
+                val = y + (y - triHelperDown(t, i, x, y, w))
+            }
+        }
+    }
+
+    return val
 }
 
 function tunnel(t, i) {
@@ -209,7 +262,7 @@ function tunnel(t, i) {
 }
 
 function loading(t, i) {
-    return Math.min(1, -(i - (((64 / 105) * t) % 15) ** 5))
+    return Math.min(1, -(i - (((64 / 105) * t) % phaseLength) ** 3.2))
 }
 
 function fire(t, i) {
