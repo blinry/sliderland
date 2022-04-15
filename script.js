@@ -2,6 +2,7 @@ let sin = Math.sin
 let cos = Math.cos
 let abs = Math.abs
 let floor = Math.floor
+let ceil = Math.ceil
 let sqrt = Math.sqrt
 let random = Math.random
 let PI = Math.PI
@@ -36,9 +37,11 @@ function update() {
     } else {
         let funcs = [
             loading,
+            stairScroll,
+            stairHor,
+            spectrogram,
             onesine,
             twosines,
-            stairHor,
             stairVer,
             twister,
             drop,
@@ -51,7 +54,7 @@ function update() {
             rand,
             empty,
         ]
-        //funcs = [ball]
+        //funcs = [spectrogram]
 
         t = t + funcs.length * phaseLength
 
@@ -73,6 +76,33 @@ function update() {
     //interpolate(twosines, ball)
 
     requestAnimationFrame(update)
+}
+
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)()
+// Get the source
+const audio = document.querySelector("audio")
+audio.onplay = () => {
+    audioCtx.resume()
+    restart()
+}
+const source = audioCtx.createMediaElementSource(audio)
+// Create an analyser
+const analyser = audioCtx.createAnalyser()
+analyser.fftSize = 64 * 2 * 8
+const bufferLength = analyser.frequencyBinCount
+const dataArray = new Uint8Array(analyser.frequencyBinCount)
+// Connect parts
+source.connect(analyser)
+analyser.connect(audioCtx.destination)
+function spectrogram(t, i) {
+    if (i == 0) {
+        analyser.getByteFrequencyData(dataArray)
+    }
+    return dataArray[i] / 300
+}
+
+function stairScroll(t, i) {
+    return ceil((i / 64) * 8 - ((t * 2) % 8)) / 8 + ((t * 2) % 8) / 8
 }
 
 function stairHor(t, i) {
@@ -159,7 +189,7 @@ function tunnel(t, i) {
 }
 
 function loading(t, i) {
-    return Math.min(1,-(i - (((64 / 105) * t) % 15) ** 5))
+    return Math.min(1, -(i - (((64 / 105) * t) % 15) ** 5))
 }
 
 function fire(t, i) {
