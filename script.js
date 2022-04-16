@@ -1,3 +1,10 @@
+let releaseMode = true
+
+if (releaseMode) {
+    document.querySelector("#formula").style.display = "none"
+    document.querySelector("audio").controls = false
+}
+
 let sin = Math.sin
 let cos = Math.cos
 let tan = Math.tan
@@ -15,6 +22,10 @@ let n = 64
 
 let tStart = performance.now()
 
+let container = document.createElement("div")
+container.id = "sliders"
+document.body.appendChild(container)
+
 for (var i = 0; i < n; i++) {
     let slider = document.createElement("input")
     slider.type = "range"
@@ -24,7 +35,7 @@ for (var i = 0; i < n; i++) {
     slider.step = 0.0001
 
     sliders.push(slider)
-    document.body.appendChild(slider)
+    container.appendChild(slider)
 }
 
 let phaseLength = (40 / 6) * 1000 // milliseconds
@@ -59,7 +70,7 @@ function update() {
             random,
             empty,
         ]
-        //funcs = [drop]
+        //funcs = [tunnel]
 
         t = t + funcs.length * phaseLength
 
@@ -86,6 +97,14 @@ function update() {
 const audioCtx = new (window.AudioContext || window.webkitAudioContext)()
 // Get the source
 const audio = document.querySelector("audio")
+
+document.body.onclick = () => {
+    tStart = performance.now() + 3.5 * 1000
+    setTimeout(() => {
+        audio.play()
+    }, 3000)
+}
+
 audio.onplay = () => {
     audioCtx.resume()
     tStart = performance.now() - audio.currentTime * 1000
@@ -128,7 +147,9 @@ function stairScroll(t, i) {
 function stairHor(t, i) {
     return (
         floor(
-            (abs((((i + t * 100) / 64) % (2 + 2 * sqrt(2))) - (1 + sqrt(2))) -
+            (abs(
+                (((i + t * 98 + 25) / 64) % (2 + 2 * sqrt(2))) - (1 + sqrt(2)),
+            ) -
                 0.5 * sqrt(2)) *
                 8,
         ) / 8
@@ -138,7 +159,7 @@ function stairHor(t, i) {
 function stairVer(t, i) {
     return (
         abs(
-            ((((floor((i / 64) * 8) / 8) * 64 + t * 100) / 64) %
+            ((((floor((i / 64) * 8) / 8) * 64 + t * 98) / 64) %
                 (2 + 2 * sqrt(2))) -
                 (1 + sqrt(2)),
         ) -
@@ -205,12 +226,12 @@ function paint(t, i) {
 }
 
 function rotating(t, i) {
-    let dx = sin(t)*20
-    let dy = cos(t)*20
+    let dx = sin(t) * 20
+    let dy = cos(t) * 20
 
     let a = sin((t / (phaseLength / 1000)) * Math.PI * 4 + 0.5) * PI
-    let x = (i-dx) / 64 - 0.5
-    let y = (x / cos(a)) * sin(a) + 0.5 + dy/64
+    let x = (i - dx) / 64 - 0.5
+    let y = (x / cos(a)) * sin(a) + 0.5 + dy / 64
     return y
 }
 
@@ -280,7 +301,7 @@ function tunnel(t, i) {
     if (Math.abs(x - j) <= r) {
         let a = Math.acos(Math.abs(x - j) / r)
         let offset = Math.sin(a) * r
-        if (t % (1 / (15 / 2)) > 1 / 15) {
+        if (t % (1 / 15) > 1 / 30) {
             return y + offset
         } else {
             return y - offset
