@@ -67,6 +67,7 @@ function update() {
             sierpinski,
             tunnel,
             heart,
+            heart,
             random,
             empty,
         ]
@@ -100,9 +101,11 @@ const audio = document.querySelector("audio")
 
 document.body.onclick = () => {
     tStart = performance.now() + 3.5 * 1000
+    audio.pause()
     setTimeout(() => {
+        audio.currentTime = 0
         audio.play()
-    }, 3000)
+    }, 500)
 }
 
 audio.onplay = () => {
@@ -327,7 +330,8 @@ function heart(t, i) {
 
     let j = i / 64 + 0.01
 
-    let r = 0.2 + 0.03 * (sin(t * 4) * 0.5 + 0.5)
+    let r =
+        0.2 + 0.03 * (sin((t / (phaseLength / 1000)) * Math.PI * 8) * 0.5 + 0.5)
 
     let x = 0.5 - r
     let y = 0.43 + r
