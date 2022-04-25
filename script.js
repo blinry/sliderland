@@ -1,8 +1,10 @@
-let releaseMode = true
+let releaseMode = false
 
+document.querySelector("audio").controls = false
 if (releaseMode) {
     document.querySelector("#formula").style.display = "none"
-    document.querySelector("audio").controls = false
+} else {
+    document.querySelector("audio").remove()
 }
 
 let sin = Math.sin
@@ -24,7 +26,7 @@ let tStart = performance.now()
 
 let container = document.createElement("div")
 container.id = "sliders"
-document.body.appendChild(container)
+document.querySelector("#everything").appendChild(container)
 
 for (var i = 0; i < n; i++) {
     let slider = document.createElement("input")
@@ -46,7 +48,7 @@ function update() {
 
     let formula = document.getElementById("formula").value
 
-    if (formula.length > 0) {
+    if (formula.length > 0 || !releaseMode) {
         apply(userformula)
     } else {
         let funcs = [
@@ -95,35 +97,47 @@ function update() {
     requestAnimationFrame(update)
 }
 
-const audioCtx = new (window.AudioContext || window.webkitAudioContext)()
-// Get the source
-const audio = document.querySelector("audio")
+if (releaseMode) {
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)()
+    // Get the source
+    const audio = document.querySelector("audio")
 
-document.body.onclick = () => {
-    tStart = performance.now() + 3.5 * 1000
-    audio.pause()
-    setTimeout(() => {
-        audio.currentTime = 0
-        audio.play()
-    }, 500)
+    document.body.onclick = () => {
+        tStart = performance.now() + 3.5 * 1000
+        audio.pause()
+        setTimeout(() => {
+            audio.currentTime = 0
+            audio.play()
+        }, 500)
+    }
+
+    audio.onplay = () => {
+        audioCtx.resume()
+        tStart = performance.now() - audio.currentTime * 1000
+    }
+    audio.onseeking = () => {
+        tStart = performance.now() - audio.currentTime * 1000
+    }
+
+    const source = audioCtx.createMediaElementSource(audio)
+    // Create an analyser
+    const analyser = audioCtx.createAnalyser()
+    analyser.fftSize = 64 * 2 * 8
+    const bufferLength = analyser.frequencyBinCount
+    const dataArray = new Uint8Array(analyser.frequencyBinCount)
+    // Connect parts
+    source.connect(analyser)
+    analyser.connect(audioCtx.destination)
+} else {
+    let formula = document.getElementById("formula")
+    formula.oninput = () => {
+        // URL-encode formula into hash
+        let hash = encodeURIComponent(formula.value)
+        window.location.hash = hash
+        tStart = performance.now()
+    }
 }
 
-audio.onplay = () => {
-    audioCtx.resume()
-    tStart = performance.now() - audio.currentTime * 1000
-}
-audio.onseeking = () => {
-    tStart = performance.now() - audio.currentTime * 1000
-}
-const source = audioCtx.createMediaElementSource(audio)
-// Create an analyser
-const analyser = audioCtx.createAnalyser()
-analyser.fftSize = 64 * 2 * 8
-const bufferLength = analyser.frequencyBinCount
-const dataArray = new Uint8Array(analyser.frequencyBinCount)
-// Connect parts
-source.connect(analyser)
-analyser.connect(audioCtx.destination)
 function spectrogram(t, i) {
     if (i == 0) {
         analyser.getByteFrequencyData(dataArray)
@@ -406,12 +420,14 @@ function multiball(t, i) {
 
 function userformula(t, i) {
     let formula = document.getElementById("formula").value
+    let x = i / 63
 
     if (formula.length > 0) {
         try {
             var eval = new Function(
                 "t",
                 "i",
+                "x",
                 "try { with (Math) { return " +
                     formula +
                     "}} catch (e) { console.log(e) }",
@@ -421,7 +437,7 @@ function userformula(t, i) {
         }
 
         try {
-            return eval(t, i)
+            return eval(t, i, x)
         } catch (e) {
             //console.log(e)
         }
@@ -470,6 +486,17 @@ function twister(t, i) {
     let d = sin(i / 10 + t * 0.8) * 0.01
     let d2 = sin(-i / 10 + t * 2.8) * 0.02
     return Math.sin(i / 10 + t * 2.8 + (offset / n) * PI) * (0.1 + d2) + 0.5 + d
+
+    Math.sin(i / 10 + t * 2.8 + ((i % n) / 3) * PI) *
+        (0.1 + sin(-i / 10 + t * 2.8) * 0.02) +
+        0.5 +
+        sin(i / 10 + t * 0.8) * 0.01
+}
+
+// URL-decode hash
+let hash = decodeURIComponent(window.location.hash.substr(1))
+if (hash !== "") {
+    document.getElementById("formula").value = hash
 }
 
 update()
