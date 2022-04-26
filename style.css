@@ -1,0 +1,36 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100vh;
+    margin: 0;
+    overflow: hidden;
+}
+#sliders {
+    width: 64rem;
+    height: 64rem;
+    transform: translate(-16rem, -16rem) scale(0.5) rotate(-90deg);
+    position: relative;
+}
+#slider-container {
+    width: 32rem;
+    height: 32rem;
+}
+input[type="range"] {
+    width: 64rem;
+    margin: 0;
+    position: absolute;
+    top: 10rem;
+}
+#formula:focus {
+    outline: none;
+}
+#code {
+    width: 32rem;
+    font-family: monospace;
+    margin-bottom: 1rem;
+}
+.error {
+    background: #ffdede;
+}

@@ -3,62 +3,18 @@
     <head>
         <meta charset="utf-8" />
         <title>Tides editor</title>
-
-        <style>
-            body {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                flex-direction: column;
-                height: 100vh;
-                margin: 0;
-            }
-            #everything {
-                transform: scale(0.75);
-            }
-            #sliders {
-                width: 64rem;
-                height: 64rem;
-            }
-            input[type="range"] {
-                height: 64rem;
-                width: 1rem;
-                -webkit-appearance: slider-vertical;
-                margin: 0;
-            }
-            div {
-                font-size: 1.5rem;
-                font-family: mono;
-            }
-            input[type="search"]{
-                margin: 1rem;
-                padding: 0.5rem;
-                width: 53rem;
-                font-size: 1.5rem;
-                font-family: monospace;
-                border: 2px solid black;
-            }
-        </style>
+        <link rel="stylesheet" href="style.css" />
     </head>
     <body>
         <div id="everything">
-            <div>
-                (t,i,x) => <input id="formula" type="search" list="examples" value="sin(i/10+t*2.8+(i%3/3)*PI)*(0.1+sin(-i/10+t*2.8)*0.02)+0.5+sin(i/10+t*0.8)*0.01"></input><br>
-            <datalist id="examples">
-                <option value="random() /* for every slider return a value between 0 and 1 */">
-                <option value="t/10 /* t is the time in seconds */">
-                <option value="i/63 /* i is the index of the slider (0..63) */">
-                <option value="x /* x is a shorthand for i/63 */">
-                <option value="sin(x+t)/2+0.5 /* use the time to make animations */">
-                <option value="sin(x+t*4)/2+0.5 /* multiply the time to change the speed */">
-                <option value="i%2 /* create patterns using modulo */">
-                <option value="sqrt(x)+sin(i)/50 /* skip `Math.` to use methods and props like `sin` or `PI` */">
-                <option value="sin(i/10+t*2.8+(i%3/3)*PI)*(0.1+sin(-i/10+t*2.8)*0.02)+0.5+sin(i/10+t*0.8)*0.01">
-            </datalist>
-            <audio src="smooth-sliders.mp3" controls></audio><br>
+            <div id="code">
+                <div>(t,i,x) =></div>
+                <div id="formula" role="textbox" contenteditable>x</div>
+            </div>
+            <div id="slider-container">
+                <div id="sliders"></div>
             </div>
         </div>
-        <script src="script.js">
-        </script>
+        <script src="script.js"></script>
     </body>
 </html>
