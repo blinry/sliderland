@@ -30,7 +30,40 @@ input[type="range"] {
     width: 32rem;
     font-family: monospace;
     margin-bottom: 1rem;
+    position: relative;
 }
 .error {
     background: #ffdede;
+}
+#examples {
+    position: absolute;
+    top: 1rem;
+    width: 32rem;
+    display: flex;
+    flex-direction: column;
+    z-index: 1;
+    display: none;
+    background: #ddd;
+    border-radius: 0.3rem;
+    padding: 0.3rem 0;
+    box-sizing: border-box;
+}
+#examples a {
+    white-space: pre-wrap;
+    color: black;
+    text-decoration: none;
+    margin: 0rem 0;
+    padding: 0.4rem 0.2rem;
+}
+#examples a:hover {
+    background: #ccc;
+}
+#huh {
+    color: blue;
+    font-style: italic;
+    cursor: pointer;
+}
+#firstline {
+    display: flex;
+    justify-content: space-between;
 }

@@ -2,14 +2,18 @@
 <html lang="en">
     <head>
         <meta charset="utf-8" />
-        <title>Tides editor</title>
+        <title>Tides Editor</title>
+        <link rel="stylesheet" href="slider.css" />
         <link rel="stylesheet" href="style.css" />
     </head>
     <body>
         <div id="everything">
             <div id="code">
-                <div>(t,i,x) =></div>
+                <div id="firstline">
+                    <span>(t,i,x) =></span><span id="huh">Huh?</span>
+                </div>
                 <div id="formula" role="textbox" contenteditable>x</div>
+                <div id="examples"></div>
             </div>
             <div id="slider-container">
                 <div id="sliders"></div>
