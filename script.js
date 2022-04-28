@@ -68,6 +68,8 @@ let eval = () => 0
 formula.oninput = () => {
     // URL-encode formula into hash
     let hash = encodeURIComponent(formula.innerText)
+        .replace(/\(/g, "%28")
+        .replace(/\)/g, "%29")
     window.location.hash = hash
 
     // Reset t
