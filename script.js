@@ -50,12 +50,12 @@ function update() {
         for (var i = 0; i < sliders.length; i++) {
             let x = i / 63
             let val = eval(t, i, x)
-            if (val === undefined || isNaN(val) || !isFinite(val)) {
-                sliders[i].value = 0
-                sliders[i].disabled = true
-            } else {
+            if (isFinite(val)) {
                 sliders[i].value = val
                 sliders[i].disabled = false
+            } else {
+                sliders[i].value = 0
+                sliders[i].disabled = true
             }
         }
     }

@@ -67,3 +67,6 @@ input[type="range"] {
     display: flex;
     justify-content: space-between;
 }
+#intro {
+    margin: 0.4rem;
+}
