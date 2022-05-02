@@ -1,13 +1,14 @@
 let examples = [
-    "random() // for every slider return a value between 0 and 1",
-    "t/10 // t is the time in seconds",
-    "i/63 // i is the index of the slider (0..63)",
-    "x // x is a shorthand for i/63",
-    "sin(x+t)/2+0.5 // use the time to make animations",
-    "sin(x+t*4)/2+0.5 // multiply the time to change the speed",
-    "i%2 // create patterns using modulo",
-    "sqrt(x)+sin(i)/50 // skip `Math.` to use methods and props like `sin` or `PI`",
-    "sin(i/10+t*2.8+(i%3/3)*PI)*(0.1+sin(i/10+t*2.8)*0.02)+0.5+sin(i/10+t*0.8)*0.01",
+    "// a minimalist creative coding playground, by blinry\nsin(x*10+t)*0.1+0.5",
+    "// for every slider return a value between 0 and 1\nrandom()",
+    "// t is the time in seconds\nt/10",
+    "// i is the index of the slider (0..63)\ni/63",
+    "// x is a shorthand for i/63\nx",
+    "// use the time to make animations\nsin(x+t)/2+0.5",
+    "// multiply the time to change the speed\nsin(x+t*4)/2+0.5",
+    "// create patterns using modulo\ni%2",
+    "// skip `Math.` to use methods and props like `sin` or `PI`\nsqrt(x)+sin(i)/50",
+    "// try changing numbers and see what happens!\nsin(i/10+t*2.8+(i%3/3)*PI)*(0.1+sin(i/10+t*2.8)*0.02)+0.5+sin(i/10+t*0.8)*0.01",
 ]
 
 let sliders = []
@@ -31,13 +32,13 @@ for (let i = 0; i < n; i++) {
     container.appendChild(slider)
 }
 
-for (let example of examples) {
-    let code = document.createElement("a")
-    code.innerHTML = example
-    code.href = "#" + encodeURIComponent(example)
-    code.onclick = toggleExamples
-    document.querySelector("#examples").appendChild(code)
-}
+//for (let example of examples) {
+//    let code = document.createElement("a")
+//    code.innerHTML = example
+//    code.href = "#" + encodeURIComponent(example)
+//    code.onclick = toggleExamples
+//    document.querySelector("#examples").appendChild(code)
+//}
 
 let phaseLength = (40 / 6) * 1000 // milliseconds
 let fadeDuration = 1 * 1000
@@ -114,7 +115,7 @@ function getFormulaFromHash() {
             formula.innerText = hash
         }
     } else {
-        formula.innerText = "sin(x*10+t)*0.1+0.5"
+        formula.innerText = examples[0]
     }
     updateFormula()
     tStart = performance.now()
@@ -123,7 +124,21 @@ function getFormulaFromHash() {
 window.onhashchange = getFormulaFromHash
 getFormulaFromHash()
 
-let huh = document.querySelector("#huh")
+let currentExample = 0
+document.querySelector("#examples-right").onclick = () => {
+    currentExample = (currentExample + 1) % examples.length
+    formula.innerText = examples[currentExample]
+    updateFormula()
+    tStart = performance.now()
+}
+document.querySelector("#examples-left").onclick = () => {
+    currentExample = (currentExample - 1 + examples.length) % examples.length
+    formula.innerText = examples[currentExample]
+    updateFormula()
+    tStart = performance.now()
+}
+
+/*let huh = document.querySelector("#huh")
 let examplesOpen = false
 huh.onclick = toggleExamples
 
@@ -134,6 +149,6 @@ function toggleExamples() {
     } else {
         document.querySelector("#examples").style.display = "none"
     }
-}
+}*/
 
 update()

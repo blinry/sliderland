@@ -70,3 +70,7 @@ input[type="range"] {
 #intro {
     margin: 0.4rem;
 }
+#examples-left,
+#examples-right {
+    cursor: pointer;
+}
