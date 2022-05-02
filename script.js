@@ -33,7 +33,7 @@ let examples = [
         code: "x+sin(t)",
     },
     {
-        comment: "try changing numbers and see what happens!",
+        comment: "last one - try changing numbers and see what happens!",
         code: "sin(i/10+t*2.8+(i%3/3)*PI)*(0.1+sin(i/10+t*2.8)*0.02)+0.5+sin(i/10+t*0.8)*0.01",
     },
 ]
@@ -92,19 +92,24 @@ function update() {
 }
 
 let formula = document.getElementById("formula")
+let comment = document.getElementById("comment")
 let eval = () => 0
 formula.oninput = () => {
-    // URL-encode formula into hash
-    let hash = encodeURIComponent(formula.innerText)
-        .replace(/\(/g, "%28")
-        .replace(/\)/g, "%29")
-    window.location.hash = hash
+    saveFormulaToHash()
 
     // Reset t
     tStart = performance.now()
 
     // Extract function
     updateFormula()
+}
+
+function saveFormulaToHash() {
+    // URL-encode formula into hash
+    let hash = encodeURIComponent(formula.innerText)
+        .replace(/\(/g, "%28")
+        .replace(/\)/g, "%29")
+    window.location.hash = hash
 }
 
 function updateFormula() {
@@ -153,14 +158,17 @@ if (hash == "") {
     tStart = performance.now()
 } else {
     getFormulaFromHash()
+    comment.innerText = "// " + examples[0].comment
 }
 
 function loadExample(n) {
     formula.innerText = ""
+    comment.innerText = ""
     if (examples[n].comment !== "") {
-        formula.innerText = "// " + examples[n].comment + "\n"
+        comment.innerText = "// " + examples[n].comment + "\n"
     }
     formula.innerText += examples[n].code
+    window.location.hash = ""
 }
 
 let currentExample = 0
