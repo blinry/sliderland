@@ -1,14 +1,41 @@
 let examples = [
-    "// a minimalist creative coding playground, by blinry\nsin(x*10+t)*0.1+0.5",
-    "// for every slider return a value between 0 and 1\nrandom()",
-    "// t is the time in seconds\nt/10",
-    "// i is the index of the slider (0..63)\ni/63",
-    "// x is a shorthand for i/63\nx",
-    "// use the time to make animations\nsin(x+t)/2+0.5",
-    "// multiply the time to change the speed\nsin(x+t*4)/2+0.5",
-    "// create patterns using modulo\ni%2",
-    "// skip `Math.` to use methods and props like `sin` or `PI`\nsqrt(x)+sin(i)/50",
-    "// try changing numbers and see what happens!\nsin(i/10+t*2.8+(i%3/3)*PI)*(0.1+sin(i/10+t*2.8)*0.02)+0.5+sin(i/10+t*0.8)*0.01",
+    {
+        comment: "a minimalist creative coding playground, by blinry",
+        code: "sin(x*10+t)*0.1+0.5",
+    },
+    {
+        comment: "for every slider return a value between 0 and 1",
+        code: "random()",
+    },
+    {comment: "t is the time in seconds", code: "t/10"},
+    {comment: "i is the index of the slider (0..63)", code: "i/63"},
+    {comment: "you can also use x as a shorthand", code: "x"},
+    {comment: "use the time to make animations", code: "sin(x+t)/2+0.5"},
+    {
+        comment: "multiply the time to change the speed",
+        code: "sin(x+t*4)/2+0.5",
+    },
+    {comment: "you can use modulo to create patterns", code: "i%2"},
+    {
+        comment: "skip `Math.` to use methods and props like `sin` or `PI`",
+        code: "sqrt(x)+sin(i)/50",
+    },
+    {
+        comment: "more examples, this one is by @sequentialchaos",
+        code: "abs(sin(i+t))",
+    },
+    {
+        comment: "munching squares, by @daniel_bohrer",
+        code: "(i^(t*30)%64)/64",
+    },
+    {
+        comment: "",
+        code: "x+sin(t)",
+    },
+    {
+        comment: "try changing numbers and see what happens!",
+        code: "sin(i/10+t*2.8+(i%3/3)*PI)*(0.1+sin(i/10+t*2.8)*0.02)+0.5+sin(i/10+t*0.8)*0.01",
+    },
 ]
 
 let sliders = []
@@ -110,30 +137,42 @@ function updateFormula() {
 // URL-decode hash
 function getFormulaFromHash() {
     let hash = decodeURIComponent(window.location.hash.substr(1))
-    if (hash !== "") {
-        if (formula.innerText !== hash) {
-            formula.innerText = hash
-        }
-    } else {
-        formula.innerText = examples[0]
+    if (formula.innerText !== hash) {
+        formula.innerText = hash
     }
     updateFormula()
     tStart = performance.now()
 }
 
 window.onhashchange = getFormulaFromHash
-getFormulaFromHash()
+
+let hash = decodeURIComponent(window.location.hash.substr(1))
+if (hash == "") {
+    loadExample(0)
+    updateFormula()
+    tStart = performance.now()
+} else {
+    getFormulaFromHash()
+}
+
+function loadExample(n) {
+    formula.innerText = ""
+    if (examples[n].comment !== "") {
+        formula.innerText = "// " + examples[n].comment + "\n"
+    }
+    formula.innerText += examples[n].code
+}
 
 let currentExample = 0
 document.querySelector("#examples-right").onclick = () => {
     currentExample = (currentExample + 1) % examples.length
-    formula.innerText = examples[currentExample]
+    loadExample(currentExample)
     updateFormula()
     tStart = performance.now()
 }
 document.querySelector("#examples-left").onclick = () => {
     currentExample = (currentExample - 1 + examples.length) % examples.length
-    formula.innerText = examples[currentExample]
+    loadExample(currentExample)
     updateFormula()
     tStart = performance.now()
 }
