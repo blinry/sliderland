@@ -10,6 +10,10 @@ input[type="range"]::-moz-range-thumb {
     border: none;
 }
 
+input[type="range"]:disabled::-moz-range-thumb {
+    background: #cbcbcb;
+}
+
 input[type="range"]::-moz-range-track {
     height: 0.38rem;
     border: #b2b2b2 solid 0.07rem;

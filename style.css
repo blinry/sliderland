@@ -112,11 +112,44 @@ textarea {
     left: -3.5rem;
 }
 #examples-right {
-    right: -3rem;
+    right: -3.5rem;
+    /*background: #0075ff;*/
+    /*color: white;*/
+    border-radius: 0.3rem;
 }
 #examples-right:hover {
-    right: -3.5rem;
+    right: -4rem;
+    /*background: #0065ef;*/
 }
+
 #credits {
     margin-top: 1rem;
+}
+.bubble {
+    position: absolute;
+    top: -2rem;
+    left: 0.5rem;
+    background: #0075ff;
+    color: #ffffff;
+    font-family: Arial;
+    font-size: 1rem;
+    line-height: 2rem;
+    text-align: center;
+    width: 6rem;
+    height: 2rem;
+    border-radius: 0.3rem;
+    padding: 0px;
+}
+.bubble:after {
+    content: "";
+    position: absolute;
+    display: block;
+    width: 0;
+    z-index: 1;
+    border-style: solid;
+    border-color: #0075ff transparent;
+    border-width: 10px 9px 0;
+    bottom: -10px;
+    left: 17%;
+    margin-left: -9px;
 }
