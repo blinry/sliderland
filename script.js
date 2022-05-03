@@ -103,13 +103,24 @@ formula.oninput = () => {
     // Extract function
     updateFormula(formula.value)
 
-    // Calculate textarea height
+    updateTextareaHeight()
+}
+
+function updateTextareaHeight() {
     let height = 0
     formula.value.split("\n").forEach((line) => {
         height += Math.ceil(0.00001 + line.length / 80)
     })
-    formula.style.height = height * 1.2 + "rem"
+    formula.style.height = height + "rem"
 }
+
+// https://benborgers.com/posts/textarea-tab
+formula.addEventListener("keydown", (e) => {
+    if (e.keyCode === 9) {
+        e.preventDefault()
+        document.execCommand("insertText", false, " ".repeat(2))
+    }
+})
 
 //formula.onselect = (e) => {
 //    const selection = e.target.value.substring(
@@ -142,17 +153,22 @@ function saveFormulaToHash() {
 
 function updateFormula(formulaText) {
     try {
-        formulaText = formulaText.replace(/\/\/.*?$/gm, "")
-        formulaText = formulaText.replace(/\n/g, "")
+        //formulaText = formulaText.replace(/\/\/.*?$/gm, "")
+        //formulaText = formulaText.replace(/\n/g, "")
 
         if (formulaText.length > 0) {
             eval = new Function(
                 "t",
                 "i",
                 "x",
-                "try { with (Math) { return " +
-                    formulaText +
-                    "}} catch (e) {return undefined}",
+                `try {
+                    with (Math) {
+                        let fn = () => ${formulaText}
+                        return fn()
+                    }
+                } catch (e) {
+                    return undefined
+                }`,
             )
         } else {
             for (var i = 0; i < sliders.length; i++) {
@@ -176,7 +192,7 @@ function getFormulaFromHash() {
     tStart = performance.now()
 }
 
-window.onhashchange = getFormulaFromHash
+//window.onhashchange = getFormulaFromHash
 
 let hash = decodeURIComponent(window.location.hash.substr(1))
 if (hash == "") {
@@ -185,18 +201,23 @@ if (hash == "") {
     tStart = performance.now()
 } else {
     getFormulaFromHash()
+    updateTextareaHeight()
     comment.innerText = "// " + examples[0].comment
 }
 
 function loadExample(n) {
+    window.location.hash = ""
+    removeHash()
+
     formula.value = ""
     comment.innerText = ""
     if (examples[n].comment !== undefined && examples[n].comment !== "") {
         comment.innerText = "// " + examples[n].comment + "\n"
     }
     formula.value += examples[n].code
-    window.location.hash = ""
-    removeHash()
+    formula.selectionStart = formula.value.length
+    formula.selectionEnd = formula.value.length
+    formula.focus()
 }
 
 // From https://stackoverflow.com/a/5298684/248734
