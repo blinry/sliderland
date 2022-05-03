@@ -5,6 +5,7 @@
         <title>Tides Editor</title>
         <link rel="stylesheet" href="slider.css" />
         <link rel="stylesheet" href="style.css" />
+        <link rel="icon" href="favicon.ico" />
     </head>
     <body>
         <div id="everything">
@@ -17,8 +18,13 @@
                         <span id="examples-right">❯</span>
                     </span>
                 </div>
-                <div>(t,i,x) =></div>
-                <div id="formula" role="textbox" contenteditable>x</div>
+                <div>
+                    (<abbr title="time in seconds">t</abbr>,<abbr
+                        title="index of the slider (0..63)"
+                        >i</abbr
+                    >,<abbr title="position of the slider (0..1)">x</abbr>) =>
+                </div>
+                <textarea id="formula" spellcheck="false"></textarea>
                 <div id="examples">
                     <div id="intro">
                         <h2>Tides Editor</h2>
@@ -31,6 +37,22 @@
             </div>
             <div id="slider-container">
                 <div id="sliders"></div>
+            </div>
+            <div id="credits">
+                // <a href="tbd" target="_blank">source code</a> -
+                <a
+                    href="https://www.youtube.com/watch?v=bUTPlQzfz1k"
+                    target="_blank"
+                    >music video</a
+                >
+                -
+                <a href="https://twitter.com/blinry" target="_blank">twitter</a>
+                -
+                <a href="https://chaos.social/@blinry" target="_blank"
+                    >mastodon</a
+                >
+                -
+                <a href="https://patreon.com/blinry" target="_blank">patreon</a>
             </div>
         </div>
         <script src="script.js"></script>

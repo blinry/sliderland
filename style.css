@@ -1,3 +1,8 @@
+@font-face {
+    font-family: "Iosevka";
+    src: url("iosevka-regular.ttf") format("truetype");
+}
+
 body {
     display: flex;
     justify-content: center;
@@ -6,6 +11,8 @@ body {
     height: 100vh;
     margin: 0;
     overflow: hidden;
+    font-family: "Iosevka", monospace;
+    font-size: 80%;
 }
 #sliders {
     width: 64rem;
@@ -26,9 +33,20 @@ input[type="range"] {
 #formula:focus {
     outline: none;
 }
+textarea {
+    font-family: "Iosevka", monospace;
+    font-size: 100%;
+    border: none;
+    width: 32rem;
+    height: 1.2rem;
+    min-height: 1.2rem;
+    box-sizing: border-box;
+    resize: vertical;
+    overflow: hidden;
+    margin-bottom: 0;
+}
 #code {
     width: 32rem;
-    font-family: monospace;
     margin-bottom: 1rem;
     position: relative;
 }
@@ -73,4 +91,7 @@ input[type="range"] {
 #examples-left,
 #examples-right {
     cursor: pointer;
+}
+#credits {
+    margin-top: 1rem;
 }

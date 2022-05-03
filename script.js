@@ -8,7 +8,7 @@ let examples = [
         code: "random()",
     },
     {comment: "t is the time in seconds", code: "t/10"},
-    {comment: "i is the index of the slider (0..63)", code: "i/63"},
+    {comment: "i is the index of the slider (0..63)", code: "i/64"},
     {comment: "you can also use x as a shorthand", code: "x"},
     {comment: "use the time to make animations", code: "sin(x+t)/2+0.5"},
     {
@@ -31,6 +31,10 @@ let examples = [
     {
         comment: "",
         code: "x+sin(t)",
+    },
+    {
+        comment: "",
+        code: "(t*x)%1",
     },
     {
         comment: "last one - try changing numbers and see what happens!",
@@ -71,7 +75,7 @@ let phaseLength = (40 / 6) * 1000 // milliseconds
 let fadeDuration = 1 * 1000
 
 function update() {
-    let formulaText = formula.innerText
+    let formulaText = formula.value
 
     if (formulaText.length > 0) {
         let t = (performance.now() - tStart) / 1000
@@ -101,20 +105,37 @@ formula.oninput = () => {
     tStart = performance.now()
 
     // Extract function
-    updateFormula()
+    updateFormula(formula.value)
 }
+
+//formula.onselect = (e) => {
+//    const selection = e.target.value.substring(
+//        e.target.selectionStart,
+//        e.target.selectionEnd,
+//    )
+//    updateFormula(selection)
+//    console.log(selection)
+//}
+//
+//let unselect = () => {
+//    updateFormula(formula.value)
+//}
+//
+//formula.onclick = unselect
+//formula.onblur = unselect
+//formula.onkeydown = unselect
+//formula.onmousedown = unselect
 
 function saveFormulaToHash() {
     // URL-encode formula into hash
-    let hash = encodeURIComponent(formula.innerText)
+    let hash = encodeURIComponent(formula.value)
         .replace(/\(/g, "%28")
         .replace(/\)/g, "%29")
     window.location.hash = hash
 }
 
-function updateFormula() {
+function updateFormula(formulaText) {
     try {
-        let formulaText = formula.innerText
         formulaText = formulaText.replace(/\/\/.*?$/gm, "")
         formulaText = formulaText.replace(/\n/g, "")
 
@@ -142,10 +163,10 @@ function updateFormula() {
 // URL-decode hash
 function getFormulaFromHash() {
     let hash = decodeURIComponent(window.location.hash.substr(1))
-    if (formula.innerText !== hash) {
-        formula.innerText = hash
+    if (formula.value !== hash) {
+        formula.value = hash
     }
-    updateFormula()
+    updateFormula(hash)
     tStart = performance.now()
 }
 
@@ -154,7 +175,7 @@ window.onhashchange = getFormulaFromHash
 let hash = decodeURIComponent(window.location.hash.substr(1))
 if (hash == "") {
     loadExample(0)
-    updateFormula()
+    updateFormula(formula.value)
     tStart = performance.now()
 } else {
     getFormulaFromHash()
@@ -162,12 +183,12 @@ if (hash == "") {
 }
 
 function loadExample(n) {
-    formula.innerText = ""
+    formula.value = ""
     comment.innerText = ""
     if (examples[n].comment !== "") {
         comment.innerText = "// " + examples[n].comment + "\n"
     }
-    formula.innerText += examples[n].code
+    formula.value += examples[n].code
     window.location.hash = ""
 }
 
@@ -175,13 +196,13 @@ let currentExample = 0
 document.querySelector("#examples-right").onclick = () => {
     currentExample = (currentExample + 1) % examples.length
     loadExample(currentExample)
-    updateFormula()
+    updateFormula(formula.value)
     tStart = performance.now()
 }
 document.querySelector("#examples-left").onclick = () => {
     currentExample = (currentExample - 1 + examples.length) % examples.length
     loadExample(currentExample)
-    updateFormula()
+    updateFormula(formula.value)
     tStart = performance.now()
 }
 
