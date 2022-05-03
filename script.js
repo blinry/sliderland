@@ -106,6 +106,13 @@ formula.oninput = () => {
 
     // Extract function
     updateFormula(formula.value)
+
+    // Calculate textarea height
+    let height = 0
+    formula.value.split("\n").forEach((line) => {
+        height += Math.ceil(0.00001 + line.length / 79)
+    })
+    formula.style.height = height * 1.2 + "rem"
 }
 
 //formula.onselect = (e) => {
