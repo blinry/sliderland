@@ -26,16 +26,12 @@ let examples = [
     },
     {
         comment: "munching squares, by @daniel_bohrer",
-        code: "(i^(t*30)%64)/64",
+        code: "(i^(t*30)%64)/63",
     },
-    {
-        comment: "",
-        code: "x+sin(t)",
-    },
-    {
-        comment: "",
-        code: "(t*x)%1",
-    },
+    {code: "x+sin(t)"},
+    {code: "(t*x)%1"},
+    {code: "x**2"},
+    {code: "(x-0.5)*tan(t)+0.5"},
     {
         comment: "last one - try changing numbers and see what happens!",
         code: "sin(i/10+t*2.8+(i%3/3)*PI)*(0.1+sin(i/10+t*2.8)*0.02)+0.5+sin(i/10+t*0.8)*0.01",
@@ -110,7 +106,7 @@ formula.oninput = () => {
     // Calculate textarea height
     let height = 0
     formula.value.split("\n").forEach((line) => {
-        height += Math.ceil(0.00001 + line.length / 79)
+        height += Math.ceil(0.00001 + line.length / 80)
     })
     formula.style.height = height * 1.2 + "rem"
 }
@@ -139,6 +135,9 @@ function saveFormulaToHash() {
         .replace(/\(/g, "%28")
         .replace(/\)/g, "%29")
     window.location.hash = hash
+    if (hash === "") {
+        removeHash()
+    }
 }
 
 function updateFormula(formulaText) {
@@ -192,11 +191,32 @@ if (hash == "") {
 function loadExample(n) {
     formula.value = ""
     comment.innerText = ""
-    if (examples[n].comment !== "") {
+    if (examples[n].comment !== undefined && examples[n].comment !== "") {
         comment.innerText = "// " + examples[n].comment + "\n"
     }
     formula.value += examples[n].code
     window.location.hash = ""
+    removeHash()
+}
+
+// From https://stackoverflow.com/a/5298684/248734
+function removeHash() {
+    var scrollV,
+        scrollH,
+        loc = window.location
+    if ("pushState" in history)
+        history.pushState("", document.title, loc.pathname + loc.search)
+    else {
+        // Prevent scrolling by storing the page's current scroll offset
+        scrollV = document.body.scrollTop
+        scrollH = document.body.scrollLeft
+
+        loc.hash = ""
+
+        // Restore the scroll offset, should be flicker free
+        document.body.scrollTop = scrollV
+        document.body.scrollLeft = scrollH
+    }
 }
 
 let currentExample = 0
@@ -211,6 +231,9 @@ document.querySelector("#examples-left").onclick = () => {
     loadExample(currentExample)
     updateFormula(formula.value)
     tStart = performance.now()
+}
+document.querySelector("#sliders").onclick = () => {
+    document.querySelector("#examples-right").click()
 }
 
 /*let huh = document.querySelector("#huh")

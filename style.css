@@ -23,6 +23,7 @@ body {
 #slider-container {
     width: 32rem;
     height: 32rem;
+    position: relative;
 }
 input[type="range"] {
     width: 64rem;
@@ -91,6 +92,30 @@ textarea {
 #examples-left,
 #examples-right {
     cursor: pointer;
+    position: absolute;
+    top: 14.5rem;
+    font-size: 1.2rem;
+    width: 3rem;
+    height: 3rem;
+    text-align: center;
+    line-height: 3rem;
+    transition: all 0.2s;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+#examples-left {
+    left: -3rem;
+}
+#examples-left:hover {
+    left: -3.5rem;
+}
+#examples-right {
+    right: -3rem;
+}
+#examples-right:hover {
+    right: -3.5rem;
 }
 #credits {
     margin-top: 1rem;
