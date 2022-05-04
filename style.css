@@ -15,21 +15,14 @@ body {
     font-size: 80%;
 }
 #sliders {
-    width: 64rem;
-    height: 64rem;
-    transform: translate(-16rem, -16rem) scale(0.5) rotate(-90deg);
+    width: 32rem;
+    height: 32rem;
     position: relative;
 }
 #slider-container {
     width: 32rem;
     height: 32rem;
     position: relative;
-}
-input[type="range"] {
-    width: 64rem;
-    margin: 0;
-    position: absolute;
-    top: 10rem;
 }
 #formula:focus {
     outline: none;
@@ -39,12 +32,13 @@ textarea {
     font-size: 100%;
     border: none;
     width: 32rem;
-    height: 1.2rem;
-    min-height: 1.2rem;
+    height: 1rem;
+    min-height: 1rem;
     box-sizing: border-box;
     resize: none;
     overflow: hidden;
     margin-bottom: 0;
+    padding: 0;
 }
 #code {
     width: 32rem;

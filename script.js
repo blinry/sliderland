@@ -51,23 +51,40 @@ let examples = [
 let sliders = []
 let n = 64
 
+let w = 2000 // size of the canvas
+let b = 25 // border width
+
 let tStart = performance.now()
 
 let container = document.querySelector("#sliders")
+let ctx = container.getContext("2d")
 
-for (let i = 0; i < n; i++) {
-    let slider = document.createElement("input")
-    slider.type = "range"
-    slider.min = 0
-    slider.max = 1
-    slider.value = 0
-    slider.step = 0.0001
-    slider.style.left = 0
-    slider.style.top = `${i}rem`
-
-    sliders.push(slider)
-    container.appendChild(slider)
+CanvasRenderingContext2D.prototype.roundRect = function (x, y, w, h, r) {
+    if (w < 2 * r) r = w / 2
+    if (h < 2 * r) r = h / 2
+    this.beginPath()
+    this.moveTo(x + r, y)
+    this.arcTo(x + w, y, x + w, y + h, r)
+    this.arcTo(x + w, y + h, x, y + h, r)
+    this.arcTo(x, y + h, x, y, r)
+    this.arcTo(x, y, x + w, y, r)
+    this.closePath()
+    return this
 }
+
+//for (let i = 0; i < n; i++) {
+//    let slider = document.createElement("input")
+//    slider.type = "range"
+//    slider.min = 0
+//    slider.max = 1
+//    slider.value = 0
+//    slider.step = 0.0001
+//    slider.style.left = 0
+//    slider.style.top = `${i}rem`
+//
+//    sliders.push(slider)
+//    container.appendChild(slider)
+//}
 
 //for (let example of examples) {
 //    let code = document.createElement("a")
@@ -83,19 +100,56 @@ let fadeDuration = 1 * 1000
 function update() {
     let formulaText = formula.value
 
-    if (formulaText.length > 0) {
-        let t = (performance.now() - tStart) / 1000
-        for (var i = 0; i < sliders.length; i++) {
-            let x = i / 63
-            let val = eval(t, i, x)
-            if (isFinite(val)) {
-                sliders[i].value = val
-                sliders[i].disabled = false
-            } else {
-                sliders[i].value = 0
-                sliders[i].disabled = true
-            }
+    ctx.fillStyle = "white"
+    ctx.fillRect(0, 0, w, w + 2 * b)
+
+    if (formulaText.length === 0) {
+        eval = () => 0
+    }
+
+    let t = (performance.now() - tStart) / 1000
+    for (var i = 0; i < n; i++) {
+        let x = i / 63
+        let val = eval(t, i, x)
+        if (isFinite(val)) {
+            sliderColor = "#0075ff"
+            val = Math.min(val, 1)
+            val = Math.max(val, 0)
+        } else {
+            val = 0
+            sliderColor = "#cbcbcb"
         }
+        let sliderWidth = 0.43
+        let handleDiameter = w / 64
+        ctx.fillStyle = "#efefef"
+        ctx.strokeStyle = "#b2b2b2"
+        ctx.lineWidth = w / 1000
+        let roundRect = ctx.roundRect(
+            ((i + (1 - sliderWidth) / 2) * w) / 64,
+            b,
+            (w / 64) * sliderWidth,
+            w,
+            w / 64 / 2,
+        )
+        roundRect.fill()
+        roundRect.stroke()
+        ctx.fillStyle = sliderColor
+        ctx.roundRect(
+            ((i + (1 - sliderWidth) / 2) * w) / 64,
+            (1 - val) * (w - handleDiameter) + handleDiameter / 2 + b,
+            (w / 64) * sliderWidth,
+            w - ((1 - val) * (w - handleDiameter) + handleDiameter / 2),
+            w / 64 / 2,
+        ).fill()
+        ctx.beginPath()
+        ctx.arc(
+            ((i + 0.5) * w) / 64,
+            (1 - val) * (w - handleDiameter) + handleDiameter / 2 + b,
+            handleDiameter / 2,
+            0,
+            2 * Math.PI,
+        )
+        ctx.fill()
     }
 
     requestAnimationFrame(update)
