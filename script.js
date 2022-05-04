@@ -1,41 +1,51 @@
 let examples = [
     {
-        comment: "a minimalist creative coding playground, by blinry",
-        code: "sin(x*10+t)*0.1+0.5",
+        comment: "a minimalist creative coding playground, by @blinry",
+        code: "Math.sin(x*10+t)*0.1+0.5",
     },
     {
-        comment: "for every slider return a value between 0 and 1",
-        code: "random()",
+        comment: "write an expression that returns a value between 0 and 1",
+        code: "0.5",
     },
-    {comment: "t is the time in seconds", code: "t/10"},
-    {comment: "i is the index of the slider (0..63)", code: "i/64"},
-    {comment: "you can also use x as a shorthand", code: "x"},
-    {comment: "use the time to make animations", code: "sin(x+t)/2+0.5"},
+    {
+        comment: "the expression is evaluated for each slider individually",
+        code: "Math.random()",
+    },
+    {
+        comment: "you can use three parameters: `t` is the time in seconds",
+        code: "t/10",
+    },
+    {comment: "`x` is the position of the slider, between 0 and 1", code: "x"},
+    {comment: "and `i` is the index of the slider (0..63)", code: "i/64"},
+    {comment: "you can use the time to make animations", code: "x+Math.sin(t)"},
     {
         comment: "multiply the time to change the speed",
-        code: "sin(x+t*4)/2+0.5",
+        code: "x+Math.sin(t*4)",
     },
     {comment: "you can use modulo to create patterns", code: "i%2"},
     {
-        comment: "skip `Math.` to use methods and props like `sin` or `PI`",
-        code: "sqrt(x)+sin(i)/50",
+        comment:
+            "instead of `Math.sin` and `Math.PI` you can also just write `sin` and `PI`",
+        code: "sqrt(x)+sin(i+t)/50",
     },
+    {comment: "more examples: binary clock", code: "2**i & t*10"},
+    {comment: "circle", code: "(i%2-0.5)*sin(acos(1-x*2))+0.5"},
+    {comment: "elevator", code: "round(x*8 - t%1)/8 + t%1 / 8"},
+    {comment: "endless pattern", code: "t*x % 1"},
+    {comment: "rotating line", code: "(x-0.5)*tan(t)+0.5"},
     {
-        comment: "more examples, this one is by @sequentialchaos",
+        comment: "this one was found by @sequentialchaos",
         code: "abs(sin(i+t))",
     },
     {
         comment: "munching squares, by @daniel_bohrer",
         code: "(i^(t*30)%64)/63",
     },
-    {code: "x+sin(t)"},
-    {code: "(t*x)%1"},
-    {code: "x**2"},
-    {code: "(x-0.5)*tan(t)+0.5"},
     {
-        comment: "last one - try changing numbers and see what happens!",
-        code: "sin(i/10+t*2.8+(i%3/3)*PI)*(0.1+sin(i/10+t*2.8)*0.02)+0.5+sin(i/10+t*0.8)*0.01",
+        comment: "nice sine waves, try changing numbers and see what they do",
+        code: "sin(i/10+t*2.8+(i%3/3)*PI)*0.1+0.5+(sin(i/10-t*2.8)*0.02)",
     },
+    {comment: "now create your own", code: "/* have fun! */"},
 ]
 
 let sliders = []
@@ -253,9 +263,9 @@ document.querySelector("#examples-left").onclick = () => {
     updateFormula(formula.value)
     tStart = performance.now()
 }
-document.querySelector("#sliders").onclick = () => {
-    document.querySelector("#examples-right").click()
-}
+//document.querySelector("#sliders").onclick = () => {
+//    document.querySelector("#examples-right").click()
+//}
 
 /*let huh = document.querySelector("#huh")
 let examplesOpen = false

@@ -113,13 +113,13 @@ textarea {
 }
 #examples-right {
     right: -3.5rem;
-    /*background: #0075ff;*/
-    /*color: white;*/
+    background: #0075ff;
+    color: white;
     border-radius: 0.3rem;
 }
 #examples-right:hover {
     right: -4rem;
-    /*background: #0065ef;*/
+    background: #0065ef;
 }
 
 #credits {
@@ -152,4 +152,7 @@ textarea {
     bottom: -10px;
     left: 17%;
     margin-left: -9px;
+}
+a {
+    color: black;
 }

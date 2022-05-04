@@ -1,5 +1,6 @@
 input[type="range"] {
     background: transparent;
+    -webkit-appearance: none;
 }
 
 input[type="range"]::-moz-range-thumb {
