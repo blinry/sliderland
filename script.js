@@ -48,7 +48,8 @@ let examples = [
         code: "sin(i/10+t*2.8+(i%3/3)*PI)*0.1+sin(i/10-t*2.8)*0.02+0.5",
     },
     {
-        comment: "now create your own - when you're happy, share the url!",
+        comment:
+            "now create your own! what you type is saved in the url.",
         code: "/* have fun! */",
     },
 ]
@@ -254,9 +255,9 @@ function loadExample(n) {
     removeHash()
 
     formula.value = ""
-    comment.innerText = ""
+    comment.innerHTML = ""
     if (examples[n].comment !== undefined && examples[n].comment !== "") {
-        comment.innerText = "// " + examples[n].comment + "\n"
+        comment.innerHTML = "// " + examples[n].comment + "\n"
     }
     formula.value += examples[n].code
     formula.selectionStart = formula.value.length
