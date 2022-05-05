@@ -47,16 +47,21 @@ let examples = [
         comment: "nice sine waves, try changing numbers and see what they do",
         code: "sin(i/10+t*2.8+(i%3/3)*PI)*0.1+sin(i/10-t*2.8)*0.02+0.5",
     },
-    {comment: "now create your own - when you're happy, you can save the url!", code: "/* have fun! */"},
+    {
+        comment:
+            "now create your own - when you're happy, you can save the url!",
+        code: "/* have fun! */",
+    },
 ]
 
 let sliders = []
 let n = 64
 
 let w = 2000 // size of the canvas
-let b = 25 // border width
+let b = 25 // top/bottom border width
 
 let tStart = performance.now()
+let currentFormula
 
 let container = document.querySelector("#sliders")
 let ctx = container.getContext("2d")
@@ -73,28 +78,6 @@ CanvasRenderingContext2D.prototype.roundRect = function (x, y, w, h, r) {
     this.closePath()
     return this
 }
-
-//for (let i = 0; i < n; i++) {
-//    let slider = document.createElement("input")
-//    slider.type = "range"
-//    slider.min = 0
-//    slider.max = 1
-//    slider.value = 0
-//    slider.step = 0.0001
-//    slider.style.left = 0
-//    slider.style.top = `${i}rem`
-//
-//    sliders.push(slider)
-//    container.appendChild(slider)
-//}
-
-//for (let example of examples) {
-//    let code = document.createElement("a")
-//    code.innerHTML = example
-//    code.href = "#" + encodeURIComponent(example)
-//    code.onclick = toggleExamples
-//    document.querySelector("#examples").appendChild(code)
-//}
 
 let phaseLength = (40 / 6) * 1000 // milliseconds
 let fadeDuration = 1 * 1000
@@ -188,23 +171,24 @@ formula.addEventListener("keydown", (e) => {
     }
 })
 
-//formula.onselect = (e) => {
-//    const selection = e.target.value.substring(
-//        e.target.selectionStart,
-//        e.target.selectionEnd,
-//    )
-//    updateFormula(selection)
-//    console.log(selection)
-//}
-//
-//let unselect = () => {
-//    updateFormula(formula.value)
-//}
-//
-//formula.onclick = unselect
-//formula.onblur = unselect
-//formula.onkeydown = unselect
-//formula.onmousedown = unselect
+formula.onselect = (e) => {
+    const selection = e.target.value.substring(
+        e.target.selectionStart,
+        e.target.selectionEnd,
+    )
+    updateFormula(selection)
+}
+
+let unselect = () => {
+    if (currentFormula !== formula.value) {
+        updateFormula(formula.value)
+    }
+}
+
+formula.onclick = unselect
+formula.onblur = unselect
+formula.onkeydown = unselect
+formula.onmousedown = unselect
 
 function saveFormulaToHash() {
     // URL-encode formula into hash
@@ -219,10 +203,8 @@ function saveFormulaToHash() {
 
 function updateFormula(formulaText) {
     try {
-        //formulaText = formulaText.replace(/\/\/.*?$/gm, "")
-        //formulaText = formulaText.replace(/\n/g, "")
-
         if (formulaText.length > 0) {
+            currentFormula = formulaText
             eval = new Function(
                 "t",
                 "i",
@@ -257,8 +239,6 @@ function getFormulaFromHash() {
     updateFormula(hash)
     tStart = performance.now()
 }
-
-//window.onhashchange = getFormulaFromHash
 
 let hash = decodeURIComponent(window.location.hash.substr(1))
 if (hash == "") {
@@ -322,18 +302,5 @@ document.querySelector("#examples-left").onclick = () => {
 document.querySelector("#sliders").onclick = () => {
     document.querySelector("#examples-right").click()
 }
-
-/*let huh = document.querySelector("#huh")
-let examplesOpen = false
-huh.onclick = toggleExamples
-
-function toggleExamples() {
-    examplesOpen = !examplesOpen
-    if (examplesOpen) {
-        document.querySelector("#examples").style.display = "flex"
-    } else {
-        document.querySelector("#examples").style.display = "none"
-    }
-}*/
 
 update()
