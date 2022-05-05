@@ -48,8 +48,7 @@ let examples = [
         code: "sin(i/10+t*2.8+(i%3/3)*PI)*0.1+sin(i/10-t*2.8)*0.02+0.5",
     },
     {
-        comment:
-            "now create your own - when you're happy, you can save the url!",
+        comment: "now create your own - when you're happy, share the url!",
         code: "/* have fun! */",
     },
 ]
@@ -85,8 +84,7 @@ let fadeDuration = 1 * 1000
 function update() {
     let formulaText = formula.value
 
-    ctx.fillStyle = "white"
-    ctx.fillRect(0, 0, w, w + 2 * b)
+    ctx.clearRect(0, 0, w, w + 2 * b)
 
     if (formulaText.length === 0) {
         eval = () => 0
