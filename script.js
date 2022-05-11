@@ -15,7 +15,11 @@ let examples = [
         comment: "you can use three parameters: `t` is the time in seconds",
         code: "t/10",
     },
-    {comment: "`x` is the position of the slider, between 0 and 1", code: "x"},
+    {
+        comment:
+            "`x` is the position of the slider, between 0 (left) and 1 (right)",
+        code: "x",
+    },
     {comment: "and `i` is the index of the slider (0..63)", code: "i % 2"},
     {comment: "you can use the time to make animations", code: "x+Math.sin(t)"},
     {
@@ -23,8 +27,7 @@ let examples = [
         code: "x+Math.sin(t*4)",
     },
     {
-        comment:
-            "instead of `Math.sin` and `Math.PI` you can also just write `sin` and `PI`",
+        comment: "You can use math functions and constants like `sin` and `PI`",
         code: "sqrt(x)+sin(i+t)/50",
     },
     {
@@ -32,7 +35,7 @@ let examples = [
         code: "2**i & t*10",
     },
     {comment: "circle", code: "(i%2-0.5)*sin(acos(1-x*2))+0.5"},
-    {comment: "elevator", code: "round(x*8 - t%1)/8 + t%1 / 8"},
+    {comment: "escalator", code: "round(x*8 - t%1)/8 + t%1 / 8"},
     {comment: "endless pattern", code: "t*x % 1"},
     {comment: "rotating line", code: "(x-0.5)*tan(t)+0.5"},
     {
@@ -48,8 +51,7 @@ let examples = [
         code: "sin(i/10+t*2.8+(i%3/3)*PI)*0.1+sin(i/10-t*2.8)*0.02+0.5",
     },
     {
-        comment:
-            "now create your own! what you type is saved in the url.",
+        comment: "now create your own! what you type is saved in the url.",
         code: "/* have fun! */",
     },
 ]
@@ -78,9 +80,6 @@ CanvasRenderingContext2D.prototype.roundRect = function (x, y, w, h, r) {
     this.closePath()
     return this
 }
-
-let phaseLength = (40 / 6) * 1000 // milliseconds
-let fadeDuration = 1 * 1000
 
 function update() {
     let formulaText = formula.value
