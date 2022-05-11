@@ -12,7 +12,7 @@ let examples = [
         code: "Math.random()",
     },
     {
-        comment: "you can use three parameters: `t` is the time in seconds",
+        comment: "`t` is the time in seconds, reset it by editing the function",
         code: "t/10",
     },
     {
@@ -31,7 +31,8 @@ let examples = [
         code: "sqrt(x)+sin(i+t)/50",
     },
     {
-        comment: "more examples: binary clock, using the bitwise operator `&` ",
+        comment:
+            "more examples: binary clock, using the bitwise and operator `&` ",
         code: "2**i & t*10",
     },
     {comment: "circle", code: "(i%2-0.5)*sin(acos(1-x*2))+0.5"},
@@ -43,7 +44,12 @@ let examples = [
         code: "abs(sin(i+t))",
     },
     {
-        comment: "munching squares, by @daniel_bohrer",
+        comment: "gradient, made with @lenaschimmel",
+        code: "sign(x-random())",
+    },
+    {
+        comment:
+            "munching squares, by @daniel_bohrer, using the bitwise xor operator `^` ",
         code: "(i^(t*30)%64)/63",
     },
     {
@@ -158,6 +164,7 @@ function updateTextareaHeight() {
     formula.value.split("\n").forEach((line) => {
         height += Math.ceil(0.00001 + line.length / 80)
     })
+    height += 1
     formula.style.height = height + "rem"
 }
 
