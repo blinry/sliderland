@@ -2,11 +2,12 @@ let examples = [
     {
         comment:
             "a minimalist creative coding playground, by @blinry. click the blue arrow!",
-        code: "Math.sin(x*10+t)*0.1+0.5",
+        code: "sin(x*10+t)*0.1+0.5",
     },
     {
-        comment: "here's how to make animations only using 64 sliders!",
-        code: "Math.sin(t)*0.5+0.5",
+        comment:
+            "here's an intro on  how to make animations only using 64 sliders!",
+        code: "sin(t)*0.5+0.5",
     },
     {
         comment:
@@ -15,7 +16,7 @@ let examples = [
     },
     {
         comment: "the function is evaluated for each slider individually",
-        code: "Math.random()",
+        code: "random()",
     },
     {
         comment: "`t` is the time in seconds, reset it by editing the function",
@@ -26,15 +27,26 @@ let examples = [
             "`x` is the position of the slider, between 0 (left) and 1 (right)",
         code: "x",
     },
-    {comment: "and `i` is the index of the slider (0..63)", code: "i % 2"},
-    {comment: "you can use the time to make animations", code: "x+Math.sin(t)"},
+    {comment: "and `i` is the index of the slider (0..63)", code: "i < 32"},
+    {comment: "you can use the time to make animations", code: "x+sin(t)"},
     {
         comment: "multiply the time to change the speed",
-        code: "x+Math.sin(t*4)",
+        code: "x+sin(t*4)",
+    },
+    {comment: "use modulo to make patterns", code: "i % 2"},
+    {
+        comment:
+            "you can use math functions like `sin` or `sqrt` and constants like `PI`",
+        code: "sqrt(x)+sin(i+t)/50",
     },
     {
-        comment: "You can use math functions and constants like `sin` and `PI`",
-        code: "sqrt(x)+sin(i+t)/50",
+        comment:
+            "you can use any JavaScript! the `Math` namespace is included.",
+        code: `{
+  // try moving your browser window!
+  let offset = window.screenX/100
+  return sin(x*5 + offset)*0.2 + 0.5
+}`,
     },
     {
         comment:
@@ -50,13 +62,13 @@ let examples = [
         code: "abs(sin(i+t))",
     },
     {
-        comment: "gradient, made with @lenaschimmel",
-        code: "sign(x-random())",
-    },
-    {
         comment:
             "munching squares, by @daniel_bohrer, using the bitwise xor operator `^` ",
         code: "(i^(t*30)%64)/63",
+    },
+    {
+        comment: "gradient, made with @lenaschimmel",
+        code: "sign(x-random())",
     },
     {
         comment: "nice sine waves, try changing numbers and see what they do",
