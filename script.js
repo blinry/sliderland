@@ -12,12 +12,11 @@ if (supportsH264) {
 let examples = [
     {
         comment:
-            "a minimalist creative coding playground, by @blinry. click the blue arrow!",
+            "sliderland, a minimalist coding playground by @blinry. click the blue arrow!",
         code: "sin(x*10+t)*0.1+0.5",
     },
     {
-        comment:
-            "here's an intro on  how to make animations only using 64 sliders!",
+        comment: "sliderland lets you make animations only using 64 sliders!",
         code: "sin(t)*0.5+0.5",
     },
     {
@@ -91,7 +90,6 @@ let examples = [
     },
 ]
 
-let sliders = []
 let n = 64
 
 let b = 50 // top/bottom border width
@@ -217,22 +215,22 @@ formula.addEventListener("keydown", (e) => {
     }
 })
 
-formula.onselect = (e) => {
-    if (e.target.selectionStart == e.target.selectionEnd) {
-        updateFormula(formula.value)
-    } else {
-        const selection = e.target.value.substring(
-            e.target.selectionStart,
-            e.target.selectionEnd,
-        )
-        updateFormula(selection)
-    }
-}
-
-formula.onclick = formula.onselect
-formula.onblur = formula.onselect
-formula.onkeydown = formula.onselect
-formula.onmousedown = formula.onselect
+//formula.onselect = (e) => {
+//    if (e.target.selectionStart == e.target.selectionEnd) {
+//        updateFormula(formula.value)
+//    } else {
+//        const selection = e.target.value.substring(
+//            e.target.selectionStart,
+//            e.target.selectionEnd,
+//        )
+//        updateFormula(selection)
+//    }
+//}
+//
+//formula.onclick = formula.onselect
+//formula.onblur = formula.onselect
+//formula.onkeydown = formula.onselect
+//formula.onmousedown = formula.onselect
 
 function saveFormulaToHash() {
     // URL-encode formula into hash
@@ -263,10 +261,7 @@ function updateFormula(formulaText) {
                 }`,
             )
         } else {
-            for (var i = 0; i < sliders.length; i++) {
-                sliders[i].value = 0
-                sliders[i].disabled = false
-            }
+            theFunction = () => 0
         }
         formula.classList.remove("error")
     } catch (e) {
