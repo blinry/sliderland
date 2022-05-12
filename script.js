@@ -1,10 +1,16 @@
 let examples = [
     {
-        comment: "a minimalist creative coding playground, by @blinry",
+        comment:
+            "a minimalist creative coding playground, by @blinry. click the blue arrow!",
         code: "Math.sin(x*10+t)*0.1+0.5",
     },
     {
-        comment: "write a function that returns a value between 0 and 1",
+        comment: "here's how to make animations only using 64 sliders!",
+        code: "Math.sin(t)*0.5+0.5",
+    },
+    {
+        comment:
+            "write a function that returns a value between 0 and 1 (try changing it!)",
         code: "0.5",
     },
     {

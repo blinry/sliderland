@@ -46,7 +46,7 @@ textarea {
     margin-top: 0.5rem;
     padding: 0.5rem;
 
-    transition: background 0.2s;
+    transition: background 0.1s;
 }
 #comment {
     margin-bottom: 0.2rem;
@@ -61,10 +61,10 @@ textarea {
     position: relative;
 }
 #formula:hover {
-    background: #ddd;
+    background: #e5e5e5;
 }
 .error {
-    background: #efcece;
+    background: #efcece !important;
 }
 #examples-left,
 #examples-right {
