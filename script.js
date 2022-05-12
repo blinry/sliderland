@@ -83,8 +83,8 @@ let examples = [
 let sliders = []
 let n = 64
 
-let w = 2000 // size of the canvas
-let b = 25 // top/bottom border width
+let b = 15 // top/bottom border width
+let w = 2000 - 2 * b // size of the canvas
 
 let tStart = performance.now()
 let currentFormula
@@ -108,7 +108,9 @@ CanvasRenderingContext2D.prototype.roundRect = function (x, y, w, h, r) {
 function update() {
     let formulaText = formula.value
 
-    ctx.clearRect(0, 0, w, w + 2 * b)
+    //ctx.clearRect(0, 0, w, w + 2 * b)
+    ctx.fillStyle = "white"
+    ctx.fillRect(0, 0, w + 2 * b, w + 2 * b)
 
     if (formulaText.length === 0) {
         eval = () => 0
@@ -131,27 +133,37 @@ function update() {
         ctx.fillStyle = "#efefef"
         ctx.strokeStyle = "#b2b2b2"
         ctx.lineWidth = w / 1000
+        let topBottomOffset = (handleDiameter - sliderWidth * (w / 64)) / 2
         let roundRect = ctx.roundRect(
-            ((i + (1 - sliderWidth) / 2) * w) / 64,
-            b,
+            b + ((i + (1 - sliderWidth) / 2) * w) / 64,
+            b + topBottomOffset,
             (w / 64) * sliderWidth,
-            w,
+            w - 2 * topBottomOffset,
             w / 64 / 2,
         )
         roundRect.fill()
         roundRect.stroke()
         ctx.fillStyle = sliderColor
         ctx.roundRect(
-            ((i + (1 - sliderWidth) / 2) * w) / 64,
-            (1 - val) * (w - handleDiameter) + handleDiameter / 2 + b,
+            b + ((i + (1 - sliderWidth) / 2) * w) / 64,
+            topBottomOffset +
+                (1 - val) * (w - 2 * topBottomOffset - handleDiameter) +
+                handleDiameter / 2 +
+                b,
             (w / 64) * sliderWidth,
-            w - ((1 - val) * (w - handleDiameter) + handleDiameter / 2),
+            w -
+                2 * topBottomOffset -
+                ((1 - val) * (w - 2 * topBottomOffset - handleDiameter) +
+                    handleDiameter / 2),
             w / 64 / 2,
         ).fill()
         ctx.beginPath()
         ctx.arc(
-            ((i + 0.5) * w) / 64,
-            (1 - val) * (w - handleDiameter) + handleDiameter / 2 + b,
+            b + ((i + 0.5) * w) / 64,
+            topBottomOffset +
+                (1 - val) * (w - 2 * topBottomOffset - handleDiameter) +
+                handleDiameter / 2 +
+                b,
             handleDiameter / 2,
             0,
             2 * Math.PI,

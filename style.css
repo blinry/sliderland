@@ -16,6 +16,7 @@ body {
 #sliders {
     width: 32rem;
     height: 32rem;
+    transform: scale(calc(2035 / 2000));
     position: relative;
 }
 #slider-container {
