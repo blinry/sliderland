@@ -269,6 +269,7 @@ function loadExample(n) {
     formula.selectionStart = formula.value.length
     formula.selectionEnd = formula.value.length
     formula.focus()
+    updateTextareaHeight()
 }
 
 // From https://stackoverflow.com/a/5298684/248734
