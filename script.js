@@ -5,6 +5,8 @@ const supportsH264 = MediaRecorder.isTypeSupported("video/webm;codecs=h264")
 let mimeType = "video/webm"
 if (supportsH264) {
     mimeType += ";codecs=h264"
+} else {
+    document.querySelector("#recordspan").remove()
 }
 
 let examples = [
@@ -413,15 +415,17 @@ function stopRecording() {
 
 var record = document.querySelector("#record")
 
-record.onclick = () => {
-    if (record.innerHTML == "stop") {
-        record.innerHTML = "stopping"
-        stopRecording()
-    } else if (record.innerHTML == "record") {
-        record.innerHTML = "stop"
-        startRecording()
-    } else {
-        // nop
+if (record) {
+    record.onclick = () => {
+        if (record.innerHTML == "stop") {
+            record.innerHTML = "stopping"
+            stopRecording()
+        } else if (record.innerHTML == "record") {
+            record.innerHTML = "stop"
+            startRecording()
+        } else {
+            // nop
+        }
     }
 }
 
