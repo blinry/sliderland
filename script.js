@@ -1,3 +1,12 @@
+const {createFFmpeg} = FFmpeg
+const ffmpeg = createFFmpeg({log: true})
+
+const supportsH264 = MediaRecorder.isTypeSupported("video/webm;codecs=h264")
+let mimeType = "video/webm"
+if (supportsH264) {
+    mimeType += ";codecs=h264"
+}
+
 let examples = [
     {
         comment:
@@ -113,13 +122,13 @@ function update() {
     ctx.fillRect(0, 0, w + 2 * b, w + 2 * b)
 
     if (formulaText.length === 0) {
-        eval = () => 0
+        theFunction = () => 0
     }
 
     let t = (performance.now() - tStart) / 1000
     for (var i = 0; i < n; i++) {
         let x = i / 63
-        let val = eval(t, i, x)
+        let val = theFunction(t, i, x)
         if (isFinite(val)) {
             sliderColor = "#0075ff"
             val = Math.min(val, 1)
@@ -176,7 +185,7 @@ function update() {
 
 let formula = document.getElementById("formula")
 let comment = document.getElementById("comment")
-let eval = () => 0
+let theFunction = () => 0
 formula.oninput = () => {
     saveFormulaToHash()
 
@@ -238,7 +247,7 @@ function updateFormula(formulaText) {
     try {
         if (formulaText.length > 0) {
             currentFormula = formulaText
-            eval = new Function(
+            theFunction = new Function(
                 "t",
                 "i",
                 "x",
@@ -342,39 +351,65 @@ function startRecording() {
     recordingStarted = true
     const chunks = [] // here we will store our recorded media chunks (Blobs)
     const stream = canvas.captureStream() // grab our canvas MediaStream
-    rec = new MediaRecorder(stream) // init the recorder
+    rec = new MediaRecorder(stream, {mimeType: mimeType}) // init the recorder
     // every time the recorder has new data, we will store it in our array
     rec.ondataavailable = (e) => chunks.push(e.data)
     // only when the recorder stops, we construct a complete Blob from all the chunks
-    rec.onstop = () => exportVid(new Blob(chunks, {type: "video/webm"}))
+    rec.onstop = () => {
+        var fileBlob = new Blob(chunks, {type: mimeType})
+        var reader = new FileReader()
+        reader.onload = function (evt) {
+            ;(async () => {
+                if (!ffmpeg.isLoaded()) {
+                    await ffmpeg.load()
+                }
+
+                await ffmpeg.FS(
+                    "writeFile",
+                    "sliderland.webm",
+                    new Uint8Array(
+                        evt.target.result,
+                        0,
+                        evt.target.result.byteLength,
+                    ),
+                )
+
+                if (supportsH264) {
+                    await ffmpeg.run(
+                        "-i",
+                        "sliderland.webm",
+                        "-vcodec",
+                        "copy",
+                        "-qscale",
+                        "0",
+                        "sliderland.mp4",
+                    )
+                } else {
+                    await ffmpeg.run("-i", "sliderland.webm", "sliderland.mp4")
+                }
+
+                var mp4blob = ffmpeg.FS("readFile", "sliderland.mp4")
+                var fr = new FileReader()
+                fr.onload = (e) => {
+                    let dataUrl = e.target.result
+
+                    var link = document.createElement("a")
+                    link.href = dataUrl
+                    document.body.appendChild(link)
+                    link.download = "sliderland.mp4"
+                    link.click()
+                }
+                fr.readAsDataURL(new Blob([mp4blob], {type: "video/mp4"}))
+            })()
+        }
+        reader.readAsArrayBuffer(fileBlob)
+    }
     rec.start()
 }
 
 function stopRecording() {
     rec.stop()
     recordingStarted = false
-}
-
-function exportVid(blob) {
-    const vid = document.createElement("video")
-    vid.src = URL.createObjectURL(blob)
-    vid.controls = true
-    //document.body.appendChild(vid)
-    const a = document.createElement("a")
-    a.download = "sliderland.webm"
-    a.href = vid.src
-    a.style.display = "none"
-    document.body.appendChild(a)
-    a.click()
-}
-
-function anim() {
-    x = (x + 1) % canvas.width
-    ctx.fillStyle = "white"
-    ctx.fillRect(0, 0, canvas.width, canvas.height)
-    ctx.fillStyle = "black"
-    ctx.fillRect(x - 20, 0, 40, 40)
-    requestAnimationFrame(anim)
 }
 
 document.querySelector("#record").onclick = () => {
