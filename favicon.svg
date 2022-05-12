@@ -23,13 +23,13 @@
      inkscape:pagecheckerboard="0"
      inkscape:document-units="mm"
      showgrid="false"
-     inkscape:zoom="2.1385525"
-     inkscape:cx="248.53259"
-     inkscape:cy="230.52976"
-     inkscape:window-width="2250"
-     inkscape:window-height="1364"
-     inkscape:window-x="1590"
-     inkscape:window-y="463"
+     inkscape:zoom="1.4747288"
+     inkscape:cx="-14.578952"
+     inkscape:cy="-64.418626"
+     inkscape:window-width="2304"
+     inkscape:window-height="2068"
+     inkscape:window-x="1536"
+     inkscape:window-y="42"
      inkscape:window-maximized="1"
      inkscape:current-layer="layer1"
      inkscape:snap-global="true"
@@ -84,23 +84,23 @@
        style="fill:#0075ff;fill-opacity:1;stroke-width:0.15;stroke-linecap:round"
        id="rect858"
        width="9.9091759"
-       height="18.266039"
+       height="75.372307"
        x="71.714432"
-       y="248.22919" />
+       y="191.12292" />
     <rect
        style="fill:#0075ff;fill-opacity:1;stroke-width:0.15;stroke-linecap:round"
        id="rect2931"
        width="9.9091759"
-       height="39.167755"
+       height="29.039331"
        x="92.934608"
-       y="227.32747" />
+       y="237.45589" />
     <rect
        style="fill:#0075ff;fill-opacity:1;stroke-width:0.15;stroke-linecap:round"
        id="rect2933"
        width="9.9091759"
-       height="58.889797"
+       height="58.905697"
        x="113.82943"
-       y="207.60542" />
+       y="207.58951" />
     <rect
        style="fill:#0075ff;fill-opacity:1;stroke-width:0.15;stroke-linecap:round"
        id="rect2929"
@@ -112,25 +112,25 @@
        style="fill:#0075ff;fill-opacity:1;stroke-width:0.15;stroke-linecap:round"
        id="path2957"
        cx="76.59951"
-       cy="242.41614"
+       cy="182.92867"
        r="10.548036" />
     <circle
        style="fill:#0075ff;fill-opacity:1;stroke-width:0.15;stroke-linecap:round"
        id="circle3039"
        cx="97.766167"
-       cy="221.24945"
+       cy="237.44176"
        r="10.548036" />
     <circle
        style="fill:#0075ff;fill-opacity:1;stroke-width:0.15;stroke-linecap:round"
        id="circle3041"
        cx="118.93282"
-       cy="200.08276"
+       cy="202.30363"
        r="10.548036" />
     <circle
        style="fill:#0075ff;fill-opacity:1;stroke-width:0.15;stroke-linecap:round"
        id="circle3043"
        cx="140.0995"
-       cy="178.91608"
+       cy="178.94452"
        r="10.548036" />
   </g>
 </svg>
