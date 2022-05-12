@@ -344,11 +344,9 @@ document.querySelector("#examples-left").onclick = () => {
 }
 
 let rec
-let recordingStarted = false
 
 // https://stackoverflow.com/questions/50681683/how-to-save-canvas-animation-as-gif-or-webm
 function startRecording() {
-    recordingStarted = true
     const chunks = [] // here we will store our recorded media chunks (Blobs)
     const stream = canvas.captureStream() // grab our canvas MediaStream
     rec = new MediaRecorder(stream, {mimeType: mimeType}) // init the recorder
@@ -398,6 +396,8 @@ function startRecording() {
                     document.body.appendChild(link)
                     link.download = "sliderland.mp4"
                     link.click()
+
+                    record.innerHTML = "record"
                 }
                 fr.readAsDataURL(new Blob([mp4blob], {type: "video/mp4"}))
             })()
@@ -409,16 +409,19 @@ function startRecording() {
 
 function stopRecording() {
     rec.stop()
-    recordingStarted = false
 }
 
-document.querySelector("#record").onclick = () => {
-    if (recordingStarted) {
-        document.querySelector("#record").innerHTML = "record"
+var record = document.querySelector("#record")
+
+record.onclick = () => {
+    if (record.innerHTML == "stop") {
+        record.innerHTML = "stopping"
         stopRecording()
-    } else {
-        document.querySelector("#record").innerHTML = "stop"
+    } else if (record.innerHTML == "record") {
+        record.innerHTML = "stop"
         startRecording()
+    } else {
+        // nop
     }
 }
 
