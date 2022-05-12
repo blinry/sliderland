@@ -105,3 +105,7 @@ textarea {
 a {
     color: black;
 }
+#record {
+    cursor: pointer;
+    text-decoration: underline;
+}

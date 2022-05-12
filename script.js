@@ -89,8 +89,8 @@ let w = 2000 - 2 * b // size of the canvas
 let tStart = performance.now()
 let currentFormula
 
-let container = document.querySelector("#sliders")
-let ctx = container.getContext("2d")
+let canvas = document.querySelector("#sliders")
+let ctx = canvas.getContext("2d")
 
 CanvasRenderingContext2D.prototype.roundRect = function (x, y, w, h, r) {
     if (w < 2 * r) r = w / 2
@@ -332,6 +332,59 @@ document.querySelector("#examples-left").onclick = () => {
     loadExample(currentExample)
     updateFormula(formula.value)
     tStart = performance.now()
+}
+
+let rec
+let recordingStarted = false
+
+// https://stackoverflow.com/questions/50681683/how-to-save-canvas-animation-as-gif-or-webm
+function startRecording() {
+    recordingStarted = true
+    const chunks = [] // here we will store our recorded media chunks (Blobs)
+    const stream = canvas.captureStream() // grab our canvas MediaStream
+    rec = new MediaRecorder(stream) // init the recorder
+    // every time the recorder has new data, we will store it in our array
+    rec.ondataavailable = (e) => chunks.push(e.data)
+    // only when the recorder stops, we construct a complete Blob from all the chunks
+    rec.onstop = () => exportVid(new Blob(chunks, {type: "video/webm"}))
+    rec.start()
+}
+
+function stopRecording() {
+    rec.stop()
+    recordingStarted = false
+}
+
+function exportVid(blob) {
+    const vid = document.createElement("video")
+    vid.src = URL.createObjectURL(blob)
+    vid.controls = true
+    //document.body.appendChild(vid)
+    const a = document.createElement("a")
+    a.download = "sliderland.webm"
+    a.href = vid.src
+    a.style.display = "none"
+    document.body.appendChild(a)
+    a.click()
+}
+
+function anim() {
+    x = (x + 1) % canvas.width
+    ctx.fillStyle = "white"
+    ctx.fillRect(0, 0, canvas.width, canvas.height)
+    ctx.fillStyle = "black"
+    ctx.fillRect(x - 20, 0, 40, 40)
+    requestAnimationFrame(anim)
+}
+
+document.querySelector("#record").onclick = () => {
+    if (recordingStarted) {
+        document.querySelector("#record").innerHTML = "record"
+        stopRecording()
+    } else {
+        document.querySelector("#record").innerHTML = "stop"
+        startRecording()
+    }
 }
 
 update()
