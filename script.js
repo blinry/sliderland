@@ -94,7 +94,7 @@ let examples = [
 let sliders = []
 let n = 64
 
-let b = 15 // top/bottom border width
+let b = 50 // top/bottom border width
 let w = 2000 - 2 * b // size of the canvas
 
 let tStart = performance.now()
