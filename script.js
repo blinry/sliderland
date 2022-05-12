@@ -265,6 +265,7 @@ let hash = decodeURIComponent(window.location.hash.substr(1))
 if (hash == "") {
     loadExample(0)
     updateFormula(formula.value)
+    formula.focus()
     tStart = performance.now()
 } else {
     getFormulaFromHash()
@@ -284,7 +285,6 @@ function loadExample(n) {
     formula.value += examples[n].code
     formula.selectionStart = formula.value.length
     formula.selectionEnd = formula.value.length
-    formula.focus()
     updateTextareaHeight()
 }
 
