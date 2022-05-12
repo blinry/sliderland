@@ -183,23 +183,21 @@ formula.addEventListener("keydown", (e) => {
 })
 
 formula.onselect = (e) => {
-    const selection = e.target.value.substring(
-        e.target.selectionStart,
-        e.target.selectionEnd,
-    )
-    updateFormula(selection)
-}
-
-let unselect = () => {
-    if (currentFormula !== formula.value) {
+    if (e.target.selectionStart == e.target.selectionEnd) {
         updateFormula(formula.value)
+    } else {
+        const selection = e.target.value.substring(
+            e.target.selectionStart,
+            e.target.selectionEnd,
+        )
+        updateFormula(selection)
     }
 }
 
-formula.onclick = unselect
-formula.onblur = unselect
-formula.onkeydown = unselect
-formula.onmousedown = unselect
+formula.onclick = formula.onselect
+formula.onblur = formula.onselect
+formula.onkeydown = formula.onselect
+formula.onmousedown = formula.onselect
 
 function saveFormulaToHash() {
     // URL-encode formula into hash
@@ -310,9 +308,6 @@ document.querySelector("#examples-left").onclick = () => {
     loadExample(currentExample)
     updateFormula(formula.value)
     tStart = performance.now()
-}
-document.querySelector("#sliders").onclick = () => {
-    document.querySelector("#examples-right").click()
 }
 
 update()
