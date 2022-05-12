@@ -12,11 +12,11 @@ if (supportsH264) {
 let examples = [
     {
         comment:
-            "sliderland, a minimalist coding playground by @blinry. click the blue arrow!",
+            "sliderland, a minimalist coding playground by <a href=\"https://twitter.com/@blinry\" target=\"_blank\">@blinry</a>. click the blue arrow!",
         code: "sin(x*10+t)*0.1+0.5",
     },
     {
-        comment: "sliderland lets you make animations only using 64 sliders!",
+        comment: "sliderland lets you make animations using 64 sliders only!",
         code: "sin(t)*0.5+0.5",
     },
     {
@@ -51,7 +51,7 @@ let examples = [
     },
     {
         comment:
-            "you can use any JavaScript! the `Math` namespace is included.",
+            "you can use any JavaScript, in fact! the `Math` namespace is included.",
         code: `{
   // try moving your browser window!
   let offset = window.screenX/100
@@ -74,7 +74,7 @@ let examples = [
     {
         comment:
             "munching squares, by @daniel_bohrer, using the bitwise xor operator `^` ",
-        code: "(i^(t*30)%64)/63",
+        code: "(i^(t*20)%64)/63",
     },
     {
         comment: "gradient, made with @lenaschimmel",
