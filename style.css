@@ -69,6 +69,7 @@ textarea {
 }
 #examples-left,
 #examples-right {
+    z-index: 1;
     cursor: pointer;
     position: absolute;
     top: 14.5rem;
@@ -106,6 +107,12 @@ a {
     color: black;
 }
 #record {
+    background: #e5e5e5;
+    border-radius: 0.3rem;
+    padding: 0.1rem 0.3rem;
     cursor: pointer;
-    text-decoration: underline;
+}
+#record:hover {
+    background: #c7381c;
+    color: white;
 }
