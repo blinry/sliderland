@@ -85,7 +85,8 @@ let examples = [
         code: "sin(i/10+t*2.8+(i%3/3)*PI)*0.1+sin(i/10-t*2.8)*0.02+0.5",
     },
     {
-        comment: "now create your own! what you type is saved in the url.",
+        comment:
+            "now create your own! what you type is saved in the url. more info <a href='https://twitter.com/blinry/status/1525083424339509249' target='_blank'>here</a>!",
         code: "/* have fun! */",
     },
 ]
