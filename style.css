@@ -3,16 +3,20 @@
     src: url("iosevka-regular.ttf") format("truetype");
     font-display: swap;
 }
+html {
+    font-size: min(calc(100vw / 42), calc(100vh / 50));
+    height: 100%;
+}
 body {
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    height: 100vh;
     margin: 0;
     overflow: hidden;
     font-family: "Iosevka", monospace;
     font-size: 80%;
+    height: 100%;
 }
 #sliders {
     width: 32rem;
@@ -79,7 +83,8 @@ textarea {
     height: 3rem;
     text-align: center;
     line-height: 3rem;
-    transition: all 0.2s;
+    transition-property: right, left;
+    transition-duration: 0.2s;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;

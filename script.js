@@ -12,7 +12,7 @@ if (supportsH264) {
 let examples = [
     {
         comment:
-            "sliderland, a minimalist coding playground by <a href=\"https://twitter.com/@blinry\" target=\"_blank\">@blinry</a>. click the blue arrow!",
+            'sliderland, a minimalist coding playground by <a href="https://twitter.com/@blinry" target="_blank">@blinry</a>. click the blue arrow!',
         code: "sin(x*10+t)*0.1+0.5",
     },
     {
@@ -288,7 +288,7 @@ if (hash == "") {
 } else {
     getFormulaFromHash()
     updateTextareaHeight()
-    comment.innerText = "// " + examples[0].comment
+    comment.innerHTML = "// " + examples[0].comment
 }
 
 function loadExample(n) {
@@ -303,6 +303,7 @@ function loadExample(n) {
     formula.value += examples[n].code
     formula.selectionStart = formula.value.length
     formula.selectionEnd = formula.value.length
+    formula.focus()
     updateTextareaHeight()
 }
 
